@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AZOTA HUYNH DUONG DEV - Công cụ tự động trả lời câu hỏi trên nền tảng Azota.vn sử dụng Voiceim V1 API">
-    <meta name="keywords" content="AZOTA, Tampermonkey, script, Voiceim V1 API, auto answer, Huỳnh Dương Dev">
+    <meta name="description" content="AZOTA HUYNH DUONG DEV - Công cụ tự động trả lời câu hỏi trên nền tảng Azota.vn sử dụng Google Gemini API">
+    <meta name="keywords" content="AZOTA, Tampermonkey, script, Google Gemini API, auto answer, Huỳnh Dương Dev">
     <meta name="author" content="Huỳnh Dương Dev">
     <title>AZOTA BYPASS PRO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -278,7 +278,7 @@
                         <span class="block text-gray-800 dark:text-gray-100 mt-2">Tools Chọn Kết Quả</span>
                     </h1>
                     <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-lg leading-relaxed">
-                        Công cụ tự động hóa việc trả lời câu hỏi trên nền tảng Azota.vn sử dụng <span class="font-semibold text-primary-600 dark:text-primary-400">Voiceim V1 API</span> - công nghệ AI tiên tiến.
+                        Công cụ tự động hóa việc trả lời câu hỏi trên nền tảng Azota.vn sử dụng <span class="font-semibold text-primary-600 dark:text-primary-400">Google Gemini API</span> - công nghệ AI tiên tiến.
                     </p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <a href="#usage" class="inline-block bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold py-3.5 px-8 rounded-xl transition duration-300 transform hover:scale-105 shadow-lg hover:shadow-primary-600/30 active:scale-95">
@@ -323,7 +323,7 @@
 <span class="text-gray-500 dark:text-gray-400">// ==UserScript==</span>
 <span class="text-purple-600 dark:text-purple-400">// @name</span>         <span class="text-green-600 dark:text-green-400">AZOTA HUYNH DUONG DEV AUTO ĐÁP ÁN</span>
 <span class="text-purple-600 dark:text-purple-400">// @namespace</span>    <span class="text-green-600 dark:text-green-400">http://tampermonkey.net/</span>
-<span class="text-purple-600 dark:text-purple-400">// @version</span>      <span class="text-blue-600 dark:text-blue-400">2.0</span>
+<span class="text-purple-600 dark:text-purple-400">// @version</span>      <span class="text-blue-600 dark:text-blue-400">2.1</span>
 <span class="text-purple-600 dark:text-purple-400">// @description</span>  <span class="text-green-600 dark:text-green-400">Tự động trả lời câu hỏi trên nền tảng Azota.vn</span>
 <span class="text-purple-600 dark:text-purple-400">// @author</span>       <span class="text-green-600 dark:text-green-400">Huỳnh Dương DEV</span>
 <span class="text-purple-600 dark:text-purple-400">// @match</span>        <span class="text-green-600 dark:text-green-400">https://*.azota.vn/*</span>
@@ -431,7 +431,7 @@
                     </div>
                     <h3 class="text-xl font-semibold mb-3">Tùy chỉnh API Key</h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        Cho phép người dùng nhập và thay đổi Voiceim V1 API Key để sử dụng công nghệ AI mạnh mẽ nhất hiện nay.
+                        Cho phép người dùng nhập và thay đổi Google Gemini API Key để sử dụng công nghệ AI mạnh mẽ nhất hiện nay.
                     </p>
                 </div>
             </div>
@@ -502,12 +502,12 @@
                         </div>
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold mb-3">Nhập Voiceim V1 API Key</h3>
+                        <h3 class="text-xl font-semibold mb-3">Nhập Google Gemini API Key</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">
                             Nhấn nút "API Key" trên bảng điều khiển và nhập API Key của bạn để kết nối với AI.
                         </p>
                         <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 flex items-center transition-colors group">
-                            <span class="group-hover:underline">Tạo Voiceim V1 API Key</span>
+                            <span class="group-hover:underline">Tạo Google Gemini API Key</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                             </svg>
@@ -623,7 +623,7 @@
                                     Trong trường hợp này delta > 0 nên phương trình có hai nghiệm phân biệt.
                                 </p>
                                 <div class="mt-4 pt-3 border-t border-green-200 dark:border-green-800/50 text-xs text-right text-green-700 dark:text-green-400">
-                                    Powered by Voiceim V1 API
+                                    Powered by Google Gemini API
                                 </div>
                             </div>
                         </div>
@@ -675,9 +675,9 @@
                                 </div>
                             </div>
                             <div class="ml-4">
-                                <h4 class="text-lg font-semibold">Voiceim V1 API Key hợp lệ</h4>
+                                <h4 class="text-lg font-semibold">Google Gemini API Key hợp lệ</h4>
                                 <p class="mt-1 text-gray-600 dark:text-gray-300">
-                                    Bạn cần có một Voiceim V1 API Key để kết nối với trí tuệ nhân tạo tiên tiến nhất hiện nay.
+                                    Bạn cần có một Google Gemini API Key để kết nối với trí tuệ nhân tạo tiên tiến nhất hiện nay.
                                 </p>
                             </div>
                         </li>
@@ -693,7 +693,7 @@
                             <div class="ml-4">
                                 <h4 class="text-lg font-semibold">Kết nối Internet ổn định</h4>
                                 <p class="mt-1 text-gray-600 dark:text-gray-300">
-                                    Cần có kết nối Internet ổn định để script có thể giao tiếp với Voiceim V1 API và xử lý dữ liệu.
+                                    Cần có kết nối Internet ổn định để script có thể giao tiếp với Google Gemini API và xử lý dữ liệu.
                                 </p>
                             </div>
                         </li>
@@ -745,7 +745,7 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-gray-700 dark:text-gray-300">
-                                    API Key của bạn được lưu trữ cục bộ và chỉ được sử dụng để giao tiếp với Voiceim V1 API.
+                                    API Key của bạn được lưu trữ cục bộ và chỉ được sử dụng để giao tiếp với Google Gemini API.
                                 </p>
                             </div>
                         </li>
@@ -832,15 +832,48 @@
             <div class="max-w-3xl mx-auto">
                 <div class="bg-white dark:bg-dark-card rounded-xl shadow-md p-8 animate-fade-in-up border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-shadow">
                     <div class="relative border-l-2 border-primary-600 dark:border-primary-500 pl-8 ml-4 space-y-12">
-                        <!-- Version 2.0 -->
+                        <!-- Version 2.1 -->
                         <div class="relative">
                             <div class="absolute -left-10 top-0 w-8 h-8 rounded-full bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-glow">
                                 <span class="bg-white dark:bg-dark-card h-2 w-2 rounded-full"></span>
                             </div>
                             <div>
                                 <h4 class="text-xl font-bold mb-3 flex items-center">
-                                    <span>Phiên bản 2.0</span>
+                                    <span>Phiên bản 2.1</span>
                                     <span class="ml-3 text-xs font-semibold px-3 py-1 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm">Mới nhất</span>
+                                </h4>
+                                <p class="text-gray-500 dark:text-gray-400 mb-4">Phát hành: 28/10/2026</p>
+                                <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span>Thêm tùy chọn nhà cung cấp AI: Google Gemini hoặc endpoint OpenAI-compatible</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span>Cho phép đổi model Gemini và dùng model của endpoint tùy chọn</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span>Xử lý phản hồi dạng stream từ endpoint OpenAI-compatible</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Version 2.0 -->
+                        <div class="relative">
+                            <div class="absolute -left-10 top-0 w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center shadow-md">
+                                <span class="bg-white dark:bg-dark-card h-2 w-2 rounded-full"></span>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-3 flex items-center">
+                                    <span>Phiên bản 2.0</span>
                                 </h4>
                                 <p class="text-gray-500 dark:text-gray-400 mb-4">Phát hành: 05/04/2025</p>
                                 <ul class="space-y-3 text-gray-600 dark:text-gray-300">
@@ -866,7 +899,7 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                         </svg>
-                                        <span>Tích hợp Voiceim V1 API - công nghệ AI thế hệ mới, mạnh mẽ hơn nhiều</span>
+                                        <span>Tích hợp Google Gemini API - công nghệ AI thế hệ mới, mạnh mẽ hơn nhiều</span>
                                     </li>
                                     <li class="flex items-start">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -984,7 +1017,7 @@
             <hr class="border-gray-800 my-8" />
             
             <div class="text-center text-sm text-gray-400">
-                <p>&copy; 2023 HUYNH DUONG DEV. Tất cả các quyền được bảo lưu.</p>
+                <p>&copy; 2026 HUYNH DUONG DEV. Tất cả các quyền được bảo lưu.</p>
                 <p class="mt-1">
                     Script này được phát triển với mục đích hỗ trợ học tập. Vui lòng sử dụng một cách có trách nhiệm.
                 </p>
