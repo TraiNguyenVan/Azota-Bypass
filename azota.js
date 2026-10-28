@@ -41,6 +41,13 @@
 
   var BUILTIN_GEMINI_MODEL = 'gemini-2.0-flash';
 
+  /* The script reads its Gemini key from this slot at startup and refuses to
+   * start ("Chưa có API Key") when it is empty. In OpenAI-compatible mode the
+   * URL carrying that key is discarded anyway, so a sentinel keeps the guard
+   * satisfied without ever being sent anywhere useful. */
+  var GEMINI_KEY_STORAGE = 'huynhDuongApiKey_v2_2';
+  var OPENAI_SENTINEL = 'openai-compatible-proxy';
+
   function gmGet(key, fallback) {
     try {
       var value = GM_getValue(key, fallback);
@@ -212,6 +219,8 @@
     });
   }
 
+  var adapterInstalled = false;
+
   if (typeof originalRequest === 'function') {
     var patchedRequest = function (options) {
       if (!isGeminiCall(options)) return originalRequest.call(this, options);
@@ -222,25 +231,34 @@
       return originalRequest.call(this, options);
     };
 
-    var assigned = false;
     try {
       GM_xmlhttpRequest = patchedRequest;
-      assigned = GM_xmlhttpRequest === patchedRequest;
+      adapterInstalled = GM_xmlhttpRequest === patchedRequest;
     } catch (err) {
       /* read-only binding: try the window property below */
     }
-    if (!assigned) {
+    if (!adapterInstalled) {
       try {
         window.GM_xmlhttpRequest = patchedRequest;
-        assigned = window.GM_xmlhttpRequest === patchedRequest;
+        adapterInstalled = window.GM_xmlhttpRequest === patchedRequest;
       } catch (err) {
         /* give up silently; built-in behaviour still works */
       }
     }
-    if (!assigned) {
+    if (!adapterInstalled) {
       console.warn('[Azota] Không ghi đè được GM_xmlhttpRequest — tùy chọn provider/model sẽ không hoạt động.');
     }
   }
+
+  function ensureRuntimeKey(config) {
+    if (config.provider === 'openai') {
+      if (!gmGet(GEMINI_KEY_STORAGE, '')) gmSet(GEMINI_KEY_STORAGE, OPENAI_SENTINEL);
+    } else if (gmGet(GEMINI_KEY_STORAGE, '') === OPENAI_SENTINEL) {
+      gmSet(GEMINI_KEY_STORAGE, '');
+    }
+  }
+
+  ensureRuntimeKey(readConfig());
 
   function escapeHtml(value) {
     return String(value)
@@ -287,6 +305,9 @@
       option('gemini', 'Google Gemini') +
       option('openai', 'OpenAI-compatible endpoint') +
       '</select>' +
+      '<div style="color:#888;font-size:11px;margin:-4px 0 8px">' +
+      'Chọn OpenAI-compatible thì không cần Gemini API Key (nút "API Key" của panel).' +
+      '</div>' +
       section('Gemini') +
       field(
         'az-gemini-model',
@@ -403,7 +424,34 @@
       }
     }).then(function (result) {
       if (!result.isConfirmed || !result.value) return;
+
+      if (result.value.provider === 'openai' && !adapterInstalled) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Không bật được chế độ OpenAI-compatible',
+          text: 'Trình quản lý userscript không cho ghi đè GM_xmlhttpRequest. Kiểm tra console (F12) để xem cảnh báo [Azota].'
+        });
+        return;
+      }
+
+      var needsReload = result.value.provider === 'openai' && !gmGet(GEMINI_KEY_STORAGE, '');
       saveSettings(result.value);
+      ensureRuntimeKey(result.value);
+
+      if (needsReload) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Đã lưu cấu hình',
+          text: 'Cần tải lại trang một lần để script bỏ qua bước kiểm tra Gemini API Key.',
+          showCancelButton: true,
+          confirmButtonText: 'Tải lại ngay',
+          cancelButtonText: 'Để sau'
+        }).then(function (choice) {
+          if (choice.isConfirmed) location.reload();
+        });
+        return;
+      }
+
       Swal.fire({
         toast: true,
         position: 'top-end',
