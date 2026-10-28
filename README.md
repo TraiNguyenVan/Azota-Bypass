@@ -1,66 +1,148 @@
-# AZOTA HUYNH DUONG DEV AUTO ĐÁP ÁN (v2.1)
+# AZOTA HUYNH DUONG DEV AUTO ĐÁP ÁN
 
-## Giới thiệu
+![version](https://img.shields.io/badge/version-2.1-5D5CDE)
+![license](https://img.shields.io/badge/license-MIT-green)
+![platform](https://img.shields.io/badge/platform-Tampermonkey-000000)
+![site](https://img.shields.io/badge/Azota-azota.vn-5D5CDE)
 
-Script Tampermonkey này có tên "AZOTA HUYNH DUONG DEV AUTO ĐÁP ÁN" (phiên bản 2.0) được thiết kế để tự động hóa việc trả lời câu hỏi trên nền tảng Azota.vn. Nó sử dụng Gemini API của Google (thông qua một API Key do người dùng cung cấp) để phân tích câu hỏi và đưa ra câu trả lời dựa trên ngữ cảnh được cung cấp.
+Userscript Tampermonkey tự động trả lời câu hỏi trắc nghiệm và tự luận trên [Azota.vn](https://azota.vn), dùng Google Gemini hoặc bất kỳ endpoint OpenAI-compatible nào.
 
-**Lưu ý quan trọng**: Script này có tính năng tự động trả lời (auto-answer) có thể dẫn đến việc tài khoản Azota bị khóa nếu bị phát hiện. Người dùng cần chấp nhận rủi ro trước khi sử dụng tính năng này.
+<sub>**English**: A Tampermonkey userscript that answers Azota.vn quizzes through Google Gemini's `generateContent` API, with a compatibility layer that proxies the same request to any OpenAI-compatible `/chat/completions` endpoint and translates the reply back.</sub>
 
-## Các tính năng chính
+> [!WARNING]
+> Tính năng tự động trả lời có thể vi phạm điều khoản dịch vụ của Azota và khiến tài khoản bị khoá. Script được viết cho mục đích học tập — hãy dùng nút **Huỳnh Dương gợi ý** nếu bạn chỉ muốn tham khảo đáp án.
 
-* **Tự động trả lời câu hỏi**: Tự động phân tích và trả lời các câu hỏi trắc nghiệm và tự luận.
-* **Gợi ý đáp án**: Hiển thị gợi ý đáp án cho câu hỏi đang hiển thị, kèm theo giải thích ngắn gọn (đối với câu trắc nghiệm).
-* **Bảng điều khiển có thể kéo**: Bảng điều khiển script có thể được kéo và thả trên màn hình.
-* **Bộ nhớ ngữ cảnh (thử nghiệm)**: Lưu lại lịch sử câu hỏi và câu trả lời để sử dụng làm ngữ cảnh cho các câu hỏi tự luận tiếp theo (tối đa 5 câu).
-* **Ghi log chi tiết**: Ghi lại các hoạt động của script, bao gồm câu hỏi, câu trả lời, lỗi, v.v.
-* **Tùy chỉnh API Key**: Cho phép người dùng nhập và thay đổi Gemini API Key.
-* **Tùy chỉnh giao diện**: Giao diện người dùng thân thiện, có thể thu gọn/mở rộng, và hiển thị thông tin trạng thái.
-* **Hỗ trợ câu trắc nghiệm và tự luận**: Script hỗ trợ cả hai loại câu hỏi phổ biến trên Azota.
-* **Cảnh báo rủi ro**: Hiển thị cảnh báo rủi ro trước khi sử dụng tính năng tự động trả lời.
+---
 
-## Cách sử dụng
+## Showcase
 
-1.  **Cài đặt Tampermonkey**: Cài đặt tiện ích mở rộng Tampermonkey cho trình duyệt của bạn (Chrome, Firefox, v.v.).
-2.  **Cài đặt script**: Sao chép mã script và dán vào trình soạn thảo script của Tampermonkey.
-3.  **Nhập Gemini API Key**: Nhấn nút "API Key" trên bảng điều khiển và nhập API Key của bạn.
-4.  **Sử dụng tính năng**:
-    * Nhấn nút "Bắt đầu Auto (Huỳnh Dương)" để tự động trả lời tất cả câu hỏi.
-    * Nhấn nút "Huỳnh Dương gợi ý" để xem gợi ý đáp án cho câu hỏi đang hiển thị.
-    * Nhấn nút "Hiện Log" để xem log chi tiết.
-5.  **Cảnh báo**: Cần chấp nhận rủi ro trước khi sử dụng auto-answer.
+![Giao diện landing page](docs/images/hero.png)
 
-## Tùy chọn nhà cung cấp AI (v2.1)
+| Bảng điều khiển | Gợi ý đáp án |
+| --- | --- |
+| ![Bảng điều khiển bốn nút](docs/images/panel.png) | ![Thẻ gợi ý đáp án kèm giải thích](docs/images/suggestion.png) |
 
-Nút **⚙ AI Provider** ở góc dưới bên phải trang Azota mở bảng cấu hình:
+![Sáu tính năng chính](docs/images/features.png)
 
-* **Google Gemini** (mặc định)
-  * **Model**: để trống sẽ dùng mặc định của script (`gemini-2.0-flash`). Có thể nhập `gemini-1.5-pro`, `gemini-2.5-flash`, ... (tự bỏ tiền tố `models/` nếu có).
-  * API Key vẫn nhập qua nút "API Key" của script như trước.
-* **OpenAI-compatible endpoint**
-  * **Base URL**: `https://api.openai.com/v1`, `https://openrouter.ai/api/v1`, `https://api.groq.com/openai/v1`, `http://localhost:11434/v1` (Ollama), ...
-  * **Model**: ví dụ `gpt-4o-mini`, `llama3.1`, `openai/gpt-4o-mini`.
-  * **API Key**: gửi dạng `Authorization: Bearer ...`.
+**Cấu hình nhà cung cấp AI** — hộp thoại mở từ nút `⚙ AI Provider`:
 
-Cấu hình được lưu cục bộ bằng `GM_setValue` và áp dụng ngay ở request kế tiếp, không cần tải lại trang. Script chuyển request Gemini `generateContent` sang `POST {Base URL}/chat/completions` rồi dịch kết quả về lại đúng dạng `candidates[0].content.parts[0].text` mà script đang đọc.
+![Hộp thoại AI Provider](docs/images/provider-dialog.png)
 
-Để gọi được endpoint tùy chọn, header userscript có thêm `// @connect *`.
+<sub>Ảnh đầu, bảng điều khiển, thẻ gợi ý và lưới tính năng được render trực tiếp từ `index.html`. Riêng ảnh hộp thoại AI Provider là mockup dựng lại theo `buildSettingsHtml()` và CSS SweetAlert2 trong `azota.js` — không phải ảnh chụp màn hình trực tiếp trên Azota.</sub>
+
+## Tính năng
+
+- **Tự động trả lời** — phân tích và điền đáp án cho cả câu hỏi trắc nghiệm và tự luận.
+- **Gợi ý đáp án** — hiển thị đáp án kèm giải thích ngắn gọn cho câu hỏi đang mở, không tự điền.
+- **Bảng điều khiển kéo thả** — di chuyển, thu gọn/mở rộng, hiển thị trạng thái xử lý.
+- **Bộ nhớ ngữ cảnh (thử nghiệm)** — lưu tối đa 5 cặp câu hỏi/đáp án gần nhất để làm ngữ cảnh cho câu tự luận tiếp theo.
+- **Ghi log chi tiết** — theo dõi câu hỏi, câu trả lời, lỗi và request ngay trong panel.
+- **Đổi nhà cung cấp AI** — Google Gemini (mặc định) hoặc endpoint OpenAI-compatible; đổi được cả model.
+- **Lưu cấu hình cục bộ** — bằng `GM_setValue`, không cần tải lại trang khi đổi cấu hình.
+
+## Cách hoạt động
+
+Script chèn một panel vào trang Azota. Khi bạn bấm auto hoặc gợi ý, phần core (đã obfuscate) đọc câu hỏi trên trang và gọi Gemini `generateContent`. Lớp patch nằm trên đầu file chặn `GM_xmlhttpRequest` và quyết định request đó đi thẳng tới Google hay được dịch sang endpoint OpenAI-compatible.
+
+```mermaid
+flowchart LR
+    A[Trang Azota.vn] --> B[Panel điều khiển]
+    B --> C[Core: gọi generateContent]
+    C --> D{Lớp patch chặn<br/>GM_xmlhttpRequest}
+    D -->|Gemini| E[generativelanguage.googleapis.com]
+    D -->|OpenAI-compatible| F["POST {Base URL}/chat/completions"]
+    E --> C
+    F --> G[toGeminiResponse]
+    G --> C
+    C --> H[Gợi ý / Điền đáp án]
+```
+
+Chi tiết về lớp adapter, cách dịch request/response và các giới hạn: xem [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Cài đặt
+
+**Cách 1 — cài một lần bằng link:**
+
+1. Cài [Tampermonkey](https://www.tampermonkey.net/) cho Chrome, Firefox, Edge hoặc Safari.
+2. Mở link cài đặt: [`azota.js`](https://raw.githubusercontent.com/TraiNguyenVan/Azota-Bypass/main/azota.js).
+3. Tampermonkey sẽ hỏi cài đặt — bấm **Install**.
+
+**Cách 2 — dán thủ công:**
+
+1. Mở dashboard Tampermonkey → **+** (Create a new script).
+2. Xoá nội dung mẫu, dán toàn bộ [`azota.js`](azota.js), lưu lại (`Ctrl/Cmd + S`).
+
+Sau khi cài, mở Azota.vn và tải lại trang. Không có bước build — file `.js` chính là sản phẩm cuối.
+
+## Cấu hình
+
+Bấm nút **⚙ AI Provider** ở góc dưới bên phải trang Azota.
+
+| Trường | Mặc định | Ghi chú |
+| --- | --- | --- |
+| Nhà cung cấp | `Google Gemini` | Chọn `OpenAI-compatible endpoint` để dùng endpoint khác |
+| Gemini › Model | *(trống)* | Trống = model mặc định của script (`gemini-2.0-flash`); ví dụ `gemini-1.5-pro`, `gemini-2.5-flash` |
+| OpenAI › Base URL | `https://api.openai.com/v1` | OpenAI, OpenRouter, Groq, Ollama (`http://localhost:11434/v1`), LM Studio, vLLM… |
+| OpenAI › Model | `gpt-4o-mini` | Ví dụ `gpt-4o-mini`, `llama3.1`, `openai/gpt-4o-mini` |
+| OpenAI › API Key | *(trống)* | Gửi dạng `Authorization: Bearer …` |
+
+Lưu ý khi dùng chế độ OpenAI-compatible:
+
+- Không cần Gemini API Key — script tự đặt một giá trị giữ chỗ để bỏ qua bước kiểm tra key lúc khởi động.
+- Lần đầu chuyển sang chế độ này có thể cần tải lại trang một lần.
+- Cần `GM_xmlhttpRequest` ghi đè được. Nếu trình quản lý userscript chặn (console có cảnh báo `[Azota]`), chế độ này sẽ không bật.
+
+Cấu hình được lưu theo các khoá: `azota_provider`, `azota_gemini_model`, `azota_openai_base_url`, `azota_openai_model`, `azota_openai_api_key`.
+
+## Sử dụng
+
+| Nút | Chức năng |
+| --- | --- |
+| **Bắt đầu Auto (Huỳnh Dương)** | Tự động trả lời toàn bộ câu hỏi trên trang |
+| **Huỳnh Dương gợi ý** | Chỉ hiện đáp án + giải thích cho câu đang mở |
+| **API Key** | Nhập/thay Gemini API Key |
+| **Hiện Log** | Mở log chi tiết của script |
+| **⚙ AI Provider** | Chọn provider và model (nút nổi riêng, góc dưới phải) |
 
 ## Yêu cầu
 
-* Trình duyệt có cài đặt Tampermonkey.
-* Gemini API Key hợp lệ (hoặc API Key của endpoint OpenAI-compatible nếu dùng chế độ đó).
-* Kết nối Internet ổn định.
+- Trình duyệt có Tampermonkey (hoặc userscript manager tương thích `GM_xmlhttpRequest`, `GM_setValue`, `GM_getValue`).
+- Gemini API Key hợp lệ — hoặc API Key của endpoint OpenAI-compatible nếu dùng chế độ đó. Tạo key tại [Google AI Studio](https://aistudio.google.com/app/apikey).
+- Kết nối Internet ổn định.
+- Tài khoản Azota.vn.
 
-## Lưu ý
+Script tải thêm hai thư viện qua CDN: SweetAlert2 11 và jQuery 3.6.0.
 
-* Sử dụng script này có thể vi phạm điều khoản dịch vụ của Azota.
-* Tính năng tự động trả lời có thể không chính xác 100%.
-* Script này được phát triển với mục đích hỗ trợ học tập, người dùng nên sử dụng một cách có trách nhiệm.
-* Script này chỉ hỗ trợ các câu hỏi phổ biến trên azota, các câu hỏi có định dạng đặc biệt có thể không được xử lý chính xác.
-* Người dùng nên sử dụng tính năng "Huỳnh Dương gợi ý" để giảm thiểu rủi ro.
+## Cấu trúc repo
 
-## Cập nhật
+```text
+Azota-Bypass/
+├── azota.js              # Userscript: lớp patch đọc được + core đã obfuscate
+├── index.html            # Landing page tĩnh (Tailwind CDN, không cần build)
+├── README.md
+├── CHANGELOG.md
+└── docs/
+    ├── ARCHITECTURE.md   # Lớp adapter Gemini → OpenAI-compatible
+    └── images/           # Ảnh showcase dùng trong README
+```
 
-* **v2.1**: Thêm tùy chọn nhà cung cấp AI (Google Gemini hoặc endpoint OpenAI-compatible) và cho phép đổi model Gemini.
-* **v2.0**: Thêm bộ nhớ ngữ cảnh cho câu hỏi tự luận, cải thiện độ chính xác, sửa lỗi và tối ưu hóa giao diện.
-## HUYNH DUONG DEV
+## Giới hạn đã biết
+
+- **Không có build, test hay lint** — repo chỉ gồm file tĩnh; mọi thay đổi phải kiểm tra thủ công trên trình duyệt.
+- **Core đã obfuscate** — chỉ lớp patch ở đầu `azota.js` là mã nguồn đọc được; muốn sửa logic trả lời phải sửa trong phần đã obfuscate.
+- **Độ chính xác không tuyệt đối** — câu hỏi định dạng đặc biệt có thể không được nhận dạng đúng, cần chỉnh tay.
+- **Phụ thuộc CDN** — nếu SweetAlert2/jQuery không tải được, script tự lùi về `window.prompt`/`alert`.
+
+## Ghi chú pháp lý
+
+Script dùng cho mục đích học tập. Việc tự động trả lời có thể vi phạm điều khoản dịch vụ của Azota; người dùng tự chịu rủi ro với tài khoản của mình.
+
+## Đóng góp & lịch sử
+
+- Lịch sử thay đổi: [CHANGELOG.md](CHANGELOG.md)
+- Kiến trúc chi tiết: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- Landing page: [index.html](index.html)
+
+## Giấy phép
+
+MIT — theo khai báo `@license MIT` trong header userscript.
