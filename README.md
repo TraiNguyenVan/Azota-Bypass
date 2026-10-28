@@ -29,10 +29,26 @@ Script Tampermonkey này có tên "AZOTA HUYNH DUONG DEV AUTO ĐÁP ÁN" (phiên
     * Nhấn nút "Hiện Log" để xem log chi tiết.
 5.  **Cảnh báo**: Cần chấp nhận rủi ro trước khi sử dụng auto-answer.
 
+## Tùy chọn nhà cung cấp AI (v2.1)
+
+Nút **⚙ AI Provider** ở góc dưới bên phải trang Azota mở bảng cấu hình:
+
+* **Google Gemini** (mặc định)
+  * **Model**: để trống sẽ dùng mặc định của script (`gemini-2.0-flash`). Có thể nhập `gemini-1.5-pro`, `gemini-2.5-flash`, ... (tự bỏ tiền tố `models/` nếu có).
+  * API Key vẫn nhập qua nút "API Key" của script như trước.
+* **OpenAI-compatible endpoint**
+  * **Base URL**: `https://api.openai.com/v1`, `https://openrouter.ai/api/v1`, `https://api.groq.com/openai/v1`, `http://localhost:11434/v1` (Ollama), ...
+  * **Model**: ví dụ `gpt-4o-mini`, `llama3.1`, `openai/gpt-4o-mini`.
+  * **API Key**: gửi dạng `Authorization: Bearer ...`.
+
+Cấu hình được lưu cục bộ bằng `GM_setValue` và áp dụng ngay ở request kế tiếp, không cần tải lại trang. Script chuyển request Gemini `generateContent` sang `POST {Base URL}/chat/completions` rồi dịch kết quả về lại đúng dạng `candidates[0].content.parts[0].text` mà script đang đọc.
+
+Để gọi được endpoint tùy chọn, header userscript có thêm `// @connect *`.
+
 ## Yêu cầu
 
 * Trình duyệt có cài đặt Tampermonkey.
-* Gemini API Key hợp lệ.
+* Gemini API Key hợp lệ (hoặc API Key của endpoint OpenAI-compatible nếu dùng chế độ đó).
 * Kết nối Internet ổn định.
 
 ## Lưu ý
@@ -45,5 +61,6 @@ Script Tampermonkey này có tên "AZOTA HUYNH DUONG DEV AUTO ĐÁP ÁN" (phiên
 
 ## Cập nhật
 
+* **v2.1**: Thêm tùy chọn nhà cung cấp AI (Google Gemini hoặc endpoint OpenAI-compatible) và cho phép đổi model Gemini.
 * **v2.0**: Thêm bộ nhớ ngữ cảnh cho câu hỏi tự luận, cải thiện độ chính xác, sửa lỗi và tối ưu hóa giao diện.
 ## HUYNH DUONG DEV
