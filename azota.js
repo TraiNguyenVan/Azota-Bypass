@@ -102,7 +102,7 @@
   }
 
   function toChatRequest(geminiRequest, model) {
-    var payload = { model: model, messages: [] };
+    var payload = { model: model, messages: [], stream: false };
     var turns = (geminiRequest && geminiRequest.contents) || [];
 
     for (var i = 0; i < turns.length; i++) {
@@ -124,6 +124,50 @@
     }
 
     return payload;
+  }
+
+  function parseStreamedResponse(raw) {
+    var lines = String(raw || '').split(/\r?\n/);
+    var parts = [];
+    var finishReason = '';
+    var sawChunk = false;
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line || line.charAt(0) === ':') continue;
+      if (/^data:/i.test(line)) line = line.slice(5).trim();
+      if (!line || line === '[DONE]' || line.charAt(0) !== '{') continue;
+
+      var chunk;
+      try {
+        chunk = JSON.parse(line);
+      } catch (err) {
+        continue;
+      }
+
+      sawChunk = true;
+      if (chunk.error) return chunk;
+
+      var choice = (chunk.choices && chunk.choices[0]) || {};
+      var piece = choice.delta
+        ? contentToText(choice.delta.content)
+        : choice.message
+        ? contentToText(choice.message.content)
+        : contentToText(choice.text);
+      if (piece) parts.push(piece);
+      if (choice.finish_reason) finishReason = choice.finish_reason;
+    }
+
+    if (!sawChunk) return null;
+
+    return {
+      choices: [
+        {
+          message: { role: 'assistant', content: parts.join('') },
+          finish_reason: finishReason || 'stop'
+        }
+      ]
+    };
   }
 
   function toGeminiResponse(chatResponse) {
@@ -196,17 +240,23 @@
       timeout: options.timeout || 60000,
       context: options.context,
       onload: function (response) {
+        var raw = String(response.responseText || '');
         var body;
+
         try {
-          body = JSON.parse(response.responseText);
+          body = JSON.parse(raw);
         } catch (err) {
+          body = parseStreamedResponse(raw);
+        }
+
+        if (!body) {
           reply(502, {
             error: {
               message:
-                'Endpoint trả về dữ liệu không phải JSON (status ' +
+                'Endpoint trả về dữ liệu không đọc được (status ' +
                 response.status +
                 '): ' +
-                String(response.responseText || '').slice(0, 200)
+                raw.slice(0, 200)
             }
           });
           return;
