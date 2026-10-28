@@ -1,4 +1,4 @@
-# AZOTA HUYNH DUONG DEV AUTO ĐÁP ÁN (v2.0)
+# AZOTA HUYNH DUONG DEV AUTO ĐÁP ÁN (v2.1)
 
 ## Giới thiệu
 
